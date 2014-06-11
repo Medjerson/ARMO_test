@@ -1,0 +1,8 @@
+D:\Source\ARMO_test\ARMO_test\bin\Debug\ARMO_test.exe
+D:\Source\ARMO_test\ARMO_test\bin\Debug\ARMO_test.pdb
+D:\Source\ARMO_test\ARMO_test\obj\Debug\ResolveAssemblyReference.cache
+D:\Source\ARMO_test\ARMO_test\obj\Debug\ARMO_test.Form1.resources
+D:\Source\ARMO_test\ARMO_test\obj\Debug\ARMO_test.Properties.Resources.resources
+D:\Source\ARMO_test\ARMO_test\obj\Debug\ARMO_test.csproj.GenerateResource.Cache
+D:\Source\ARMO_test\ARMO_test\obj\Debug\ARMO_test.exe
+D:\Source\ARMO_test\ARMO_test\obj\Debug\ARMO_test.pdb
