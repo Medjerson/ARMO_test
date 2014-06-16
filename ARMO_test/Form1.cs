@@ -47,7 +47,10 @@ namespace ARMO_test
             {
                 MessageBox.Show("Settings reading error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-             
+            catch (Exception exc)
+            {
+                MessageBox.Show("Unknown error\n" + exc.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -77,12 +80,17 @@ namespace ARMO_test
                         treeView1.Nodes.Clear();
                         filesCount = 0;
                         stw.Start();
+                        button2.Enabled = false;
                         ytr = new Thread(newSearch);
                         ytr.Start();
                     }
                     catch (ArgumentException)
                     {
                         MessageBox.Show("Invalid name template. Pls try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show("Unknown error\n" + exc.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
                 else
@@ -110,6 +118,10 @@ namespace ARMO_test
             {
                 MessageBox.Show("Settings writing error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Unknown error\n" + exc.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void Form1_RefreshStat(object sender, ProgressEventArgs e)
@@ -135,7 +147,6 @@ namespace ARMO_test
                 EventHandler<NodeEventArgs> ep = new EventHandler<NodeEventArgs>(Form1_RefreshNodes);
                 this.Invoke(ep, sender, e);
             }
-
             else
             {
                 if (e.IsRemove)
@@ -148,12 +159,20 @@ namespace ARMO_test
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if ((ytr != null) && (ytr.ThreadState == System.Threading.ThreadState.Running))
-                ytr.Abort();
+            try
+            {
+                if ((ytr != null) && (ytr.ThreadState == System.Threading.ThreadState.Running))
+                {
+                    button2.Enabled = true;
+                    ytr.Abort();
+                }
+            }
+            catch (System.Security.SecurityException)
+            { }
+            catch (ThreadStateException)
+            { }
             if (stw != null)
                 stw.Stop();
-
-
         }
 
         #region helpers
@@ -193,10 +212,21 @@ namespace ARMO_test
         }
         private bool strExists(FileInfo inf)
         {
-            StreamReader sr = new StreamReader(inf.OpenRead());
-            while (!sr.EndOfStream)
-                if (sr.ReadLine().Contains(textBox3.Text))
-                    return true;
+            try
+            {
+                StreamReader sr = new StreamReader(inf.OpenRead());
+                while (!sr.EndOfStream)
+                    if (sr.ReadLine().Contains(textBox3.Text))
+                        return true;
+            }
+            catch (ArgumentException)
+            {
+                //skip this file
+            }
+            catch (IOException)
+            { }
+            catch (UnauthorizedAccessException)
+            { }
             return false;
         }
 
